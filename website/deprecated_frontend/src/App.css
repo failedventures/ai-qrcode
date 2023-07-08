@@ -1,0 +1,38 @@
+* {
+    font-family: -apple-system,"system-ui","Segoe UI",sans-serif;
+}
+
+.gradient-background {
+    background: #000000;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #434343, #000000);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #434343, #000000); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: #000000;
+}
+
+.gradient-background-rainbow {
+    background: linear-gradient(60deg,#f79533,#f37055,#ef4e7b,#a166ab,
+    #5073b8,#1098ad,#07b39b,#6fba82);
+    animation: animatedgradient 6s ease infinite alternate;
+    background-size: 300% 300%;
+}
+
+.logo h1, .logo h2, .logo h3, .logo h4, .logo h5, .logo h6, .logo span {
+    background: linear-gradient(60deg,#f79533,#f37055,#ef4e7b,#a166ab,
+                                      #5073b8,#1098ad,#07b39b,#6fba82);
+    animation: animatedgradient 6s ease infinite alternate;
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+@keyframes animatedgradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}

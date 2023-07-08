@@ -1,0 +1,32 @@
+from nvidia/cuda:11.8.0-base-ubuntu22.04
+
+ENV DEBIAN_FRONTEND noninteractive
+
+WORKDIR /model
+
+
+# Install Python
+RUN apt-get update && apt-get install -y python3.9 python3-pip
+
+# Install system dependencies
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y libtiff5-dev \
+    libjpeg8-dev \
+    libopenjp2-7-dev \
+    zlib1g-dev \
+    libfreetype6-dev \
+    liblcms2-dev \
+    libwebp-dev \
+    tcl8.6-dev \
+    tk8.6-dev \
+    python3-tk \
+    libharfbuzz-dev \
+    libfribidi-dev \
+    libxcb1-dev
+
+# Install Python dependencies
+COPY requirements.txt requirements.txt
+RUN pip3 install -r requirements.txt
+RUN pip3 install runpod
+
+# Copy files last to optimize caching
+COPY . .

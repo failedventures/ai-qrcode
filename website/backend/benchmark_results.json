@@ -1,0 +1,110 @@
+[
+    {
+        "interval": 136,
+        "api_call_duration": 10.811006000003545
+    },
+    {
+        "interval": 214,
+        "api_call_duration": 10.990921000000526
+    },
+    {
+        "interval": 240,
+        "api_call_duration": 11.128618875001848
+    },
+    {
+        "interval": 140,
+        "api_call_duration": 11.418040000000474
+    },
+    {
+        "interval": 202,
+        "api_call_duration": 10.996426624999003
+    },
+    {
+        "interval": 130,
+        "api_call_duration": 11.709016791002796
+    },
+    {
+        "interval": 215,
+        "api_call_duration": 20.94906620799884
+    },
+    {
+        "interval": 58,
+        "api_call_duration": 11.46690766699976
+    },
+    {
+        "interval": 273,
+        "api_call_duration": 11.448694665999938
+    },
+    {
+        "interval": 46,
+        "api_call_duration": 10.789019209001708
+    },
+    {
+        "interval": 206,
+        "api_call_duration": 10.817059125001833
+    },
+    {
+        "interval": 131,
+        "api_call_duration": 11.02853441699699
+    },
+    {
+        "interval": 150,
+        "api_call_duration": 10.790446750001138
+    },
+    {
+        "interval": 177,
+        "api_call_duration": 10.800906166998175
+    },
+    {
+        "interval": 13,
+        "api_call_duration": 11.555977417003305
+    },
+    {
+        "interval": 269,
+        "api_call_duration": 11.072247625001182
+    },
+    {
+        "interval": 201,
+        "api_call_duration": 11.430515374999231
+    },
+    {
+        "interval": 33,
+        "api_call_duration": 10.76811749999979
+    },
+    {
+        "interval": 144,
+        "api_call_duration": 10.801211166999565
+    },
+    {
+        "interval": 23,
+        "api_call_duration": 11.343574958002137
+    },
+    {
+        "interval": 300,
+        "api_call_duration": 11.63795241600019
+    },
+    {
+        "interval": 47,
+        "api_call_duration": 10.769609666000179
+    },
+    {
+        "interval": 166,
+        "api_call_duration": 10.705885416995443
+    },
+    {
+        "interval": 169,
+        "api_call_duration": 11.230350708996411
+    },
+    {
+        "interval": 151,
+        "api_call_duration": 11.459884916999727
+    },
+    {
+        "interval": 224,
+        "api_call_duration": 10.856066166001256
+    },
+    {
+        "interval": 150,
+        "api_call_duration": 11.017127500002971
+    }
+]

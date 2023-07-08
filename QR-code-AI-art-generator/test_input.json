@@ -1,0 +1,12 @@
+{
+    "input": {
+        "qr_code_content": "https://www.example.com",
+        "prompt": "Girl with beautiful dress, in front of majestic mountain view landscape",
+        "negative_prompt": "ugly, disfigured, low quality, blurry, nsfw, plain, mangled, weird",
+        "strength": 0.95,
+        "guidance_scale": 7.5,
+        "controlnet_conditioning_scale": 1.4,
+        "num_inference_steps": 40,
+        "seed": 2313123
+    }
+}

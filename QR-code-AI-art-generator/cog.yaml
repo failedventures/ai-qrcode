@@ -1,0 +1,41 @@
+# Configuration for Cog ⚙️
+# Reference: https://github.com/replicate/cog/blob/main/docs/yaml.md
+
+build:
+  # set to true if your model requires a GPU
+  gpu: true
+  cuda: "11.8"
+  python_version: "3.11.1"
+  python_packages:
+  - "diffusers==0.17.1"
+  - "transformers==4.30.2"
+  - "accelerate==0.20.3"
+  - "torch==2.0.1"
+  - "gradio==3.35.2"
+  - "Pillow==8.4.0"
+  - "qrcode==7.4.2"
+
+  system_packages:
+  - libtiff5-dev
+  - libjpeg8-dev
+  - libopenjp2-7-dev
+  - zlib1g-dev
+  - libfreetype6-dev
+  - liblcms2-dev
+  - libwebp-dev
+  - tcl8.6-dev
+  - tk8.6-dev
+  - python3-tk
+  - libharfbuzz-dev
+  - libfribidi-dev
+  - libxcb1-dev
+
+  # commands run after the environment is setup
+  run:
+  - pip install xformers==0.0.20
+  # - python3 hg_model_download.py
+    # - "echo env is ready!"
+    # - "echo another command if needed"
+
+# predict.py defines how predictions are run on your model
+predict: "predict.py:Predictor"

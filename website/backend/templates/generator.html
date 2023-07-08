@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en" style="height: 100%">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>QRArtist</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Monoton&family=VT323&display=swap" rel="stylesheet">
+</head>
+
+<body style="display: flex; flex-direction: column; height: 100%;">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+        <div class="container justify-content-start">
+            <!-- <a class="navbar-brand">QRArtist</a> -->
+            <div class="me-1"><span class="logo" style="aspect-ratio: 1/1;">QR</span></div><span
+                class="logo">artist</span>
+        </div>
+    </nav>
+    <!-- End Navbar -->
+
+    <!-- Hero Section -->
+    <section class="hero text-black text-center py-3">
+        <div class="container">
+            <h1 class="display-4">🎨 Generate QRCodes with AI!</h1>
+        </div>
+    </section>
+
+
+
+    <div class="container-fluid d-flex flex-grow-1 justify-content-center align-items-center">
+        <div class="row container-sm">
+            <div class="col-md-6 mb-3">
+
+                <!-- Submission Form -->
+                <form id="submission-form">
+                    <div class="mb-3">
+                        <label for="qr-content" class="form-label">QR Content</label>
+                        <input type="text" class="form-control" id="qr-content" name="qrcode_content" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="prompt" class="form-label">Prompt</label>
+                        <textarea type="text" class="form-control" id="prompt" name="prompt" required
+                            oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'></textarea>
+                    </div>
+                    <button id="generate-button" type="submit" class="btn btn-primary">Generate</button>
+                </form>
+            </div>
+
+            <!-- Image -->
+            <div class="col-md-6 mb-3">
+                <div class="image-container position-relative d-flex justify-content-center">
+                    <img src="static/qrcode.png" alt="Generated QRCode" class="img-fluid w-75" id="main-qrcode-image">
+                    <div class="image-overlay d-flex align-items-center justify-content-center">
+                        <button class="btn btn-secondary me-2 zoom-btn">Zoom</button>
+                        <a class="btn btn-secondary download-btn" download>Download</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <footer class="footer mt-auto py-3 bg-light">
+        <div class="container">
+            <span class="text-muted">© 2023 QRArtist</span>
+        </div>
+    </footer>
+
+    <!-- Image Modal -->
+    <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content bg-transparent border-0">
+                <div class="modal-body d-flex align-items-center justify-content-center p-2">
+                    <img id="modalImage" src="" class="img-fluid w-75" alt="Zoomed Image">
+                </div>
+            </div>
+        </div>
+        <button type="button" class="btn btn-secondary position-absolute bottom-0 start-50 translate-middle m-2" data-bs-dismiss="modal"
+            aria-label="Close">Close</button>
+    </div>
+
+    <!-- Sign Up Modal -->
+    <div class="modal fade" id="signUpModal" tabindex="-1" aria-labelledby="signUpModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="signUpModalLabel">Sign Up</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>👋 Hi there!<br>
+                        It looks like you're enjoying QRArtist!<br>
+                        Get <b>10 more credits</b> by registering with your email!</p>
+                    <form id="signUpForm">
+                        <div class="mb-3">
+                            <label for="userEmail" class="form-label">Email Address</label>
+                            <input type="email" class="form-control" id="userEmail" name="email">
+                        </div>
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="emailQRCodeCheck" name="email_qr_codes">
+                            <label class="form-check-label" for="emailQRCodeCheck">Email me my QR codes</label>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Register</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+        <!--  -->
+        <!-- Javascript -->
+        <!--  -->
+        <script>
+            window.onload = function () {
+                var form = document.getElementById("submission-form");
+                // Set form action to prevent default submission
+                // form.action = "javascript:void(0);";
+                var button = document.getElementById("generate-button");
+                var originalButtonHTML = button.innerHTML;
+
+                var signUpModal = new bootstrap.Modal(document.getElementById('signUpModal'));
+
+                // Generation Submission
+                form.addEventListener("submit", function (e) {
+                    e.preventDefault();
+                    button.disabled = true;
+                    button.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...';
+
+                    var formData = new FormData(form);
+                    var data = Object.fromEntries(formData.entries());
+                    var queryString = new URLSearchParams(window.location.search);
+                    var url = "/qrcode"
+                    if (queryString.has("registration_uuid")) {
+                        url = url + "?" + queryString;
+                    }
+                    fetch(url, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Visitor-ID": sessionStorage.getItem('visitorId'),
+                        },
+                        body: JSON.stringify(data),
+                    }).then(function (response) {
+                        if (!response.ok) {
+                            response.json().then((data) => {
+                                if (data.error == "no_credits") {
+                                    // Sign Up Modal
+                                    signUpModal.show();
+                                } else {
+                                    alert("Failed to generate image!");
+                                };
+                                return Promise.reject("Failed to generate image!");
+                            });
+                        }
+                        return response.blob();
+                    }).then(function (imageBlob) {
+                        // Change image
+                        console.log(imageBlob);
+                        var imageURL = URL.createObjectURL(imageBlob);
+                        var image = document.getElementById("main-qrcode-image");
+                        image.src = imageURL;
+                    }).finally(function () {
+                        // Reset button
+                        button.disabled = false;
+                        button.innerHTML = originalButtonHTML;
+                    });
+                });
+
+                // Sign Up Form
+                document.getElementById("signUpForm").addEventListener("submit", function (event) {
+                    event.preventDefault();
+
+                    const userEmail = document.getElementById("userEmail").value;
+                    const emailQRCodeCheck = document.getElementById("emailQRCodeCheck").checked;
+
+                    fetch("/register_user", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            email: userEmail,
+                            email_qr_codes: emailQRCodeCheck
+                        }),
+                    })
+                        .then((response) => {
+                            if (!response.ok) {
+                                response.json().then(data => {
+                                    alert(data.message);   // TODO: Replace with snack bar
+                                    return;
+                                })
+                            } else {
+                                alert("Successful registration! Please check your email!");
+                                signUpModal.hide();
+                            }
+                        })
+                        .catch((error) => {
+                            console.error("Error:", error);
+                        });
+                });
+
+                // Image Container
+                var imageContainer = document.querySelector('.image-container');
+                var zoomButton = imageContainer.querySelector('.zoom-btn');
+                var downloadButton = imageContainer.querySelector('.download-btn');
+
+                // Image Zoom Button
+                zoomButton.addEventListener('click', function (e) {
+                    e.stopPropagation();  // prevent triggering hover out event
+                    // find the sibling img element and get its src attribute
+                    var imgSrc = e.target.parentElement.previousElementSibling.src;
+                    document.querySelector('#modalImage').src = imgSrc;  // set image source
+                    var imageModal = new bootstrap.Modal(document.getElementById('imageModal'));  // create modal
+                    imageModal.show();  // show modal
+                });
+
+                // Image Download Button
+                var downloadButton = imageContainer.querySelector('.download-btn');
+                downloadButton.addEventListener('mouseenter', function (e) {
+                    // find the sibling img element and get its src attribute
+                    var imgSrc = downloadButton.parentElement.previousElementSibling.src;
+                    downloadButton.href = imgSrc;  // set download link
+                });
+            };
+
+
+            window.addEventListener("DOMContentLoaded", function () {
+                // FingerprintJS. Serve from our own domain cause adblockers.
+                const fpPromise = import("{{ url_for('static', path='/fingerprint.js') }}")
+                    .then(FingerprintJS => FingerprintJS.load())
+
+                // Get the visitor identifier when you need it.
+                fpPromise
+                    .then(fp => fp.get())
+                    .then(result => {
+                        // This is the visitor identifier:
+                        const visitorId = result.visitorId
+                        sessionStorage.setItem('visitorId', visitorId);
+                        // console.debug("Visitor ID: ", visitorId)
+                    })
+            })
+        </script>
+
+        <!-- FingerprintJS for browser fingerprinting -->
+        <!-- <script src="{{ url_for('static', path='/fingerprint.js') }}"></script> -->
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+
+        <!-- CSS -->
+        <style>
+            .logo {
+                background: linear-gradient(60deg, #f79533, #f37055, #ef4e7b, #a166ab,
+                        #5073b8, #1098ad, #07b39b, #6fba82);
+                animation: animatedgradient 6s ease infinite alternate;
+                background-size: 300% 300%;
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                font-family: 'Monoton', monospace;
+                /* font-family: 'VT323', monospace; */
+                font-size: 2rem;
+            }
+
+            @keyframes animatedgradient {
+                0% {
+                    background-position: 0% 50%;
+                }
+
+                50% {
+                    background-position: 100% 50%;
+                }
+
+                100% {
+                    background-position: 0% 50%;
+                }
+            }
+
+            .image-container {
+                cursor: pointer;
+            }
+
+            .image-overlay {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(255, 255, 255, 0.5);
+                opacity: 0;
+                transition: opacity .5s;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .image-container:hover .image-overlay {
+                opacity: 1;
+            }
+
+
+            .hero h1 {
+                font-size: 2.5rem;
+                /* Change to adjust the font size */
+                font-weight: bold;
+            }
+        </style>
+</body>
+
+</html>
