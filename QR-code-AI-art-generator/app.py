@@ -74,7 +74,7 @@ def inference(
     seed: int = -1,
     init_image: Image.Image | None = None,
     qrcode_image: Image.Image | None = None,
-    use_qr_code_as_init_image = True,
+    use_qr_code_as_init_image = False,
     sampler = "DPM++ Karras SDE",
     num_inference_steps=40,
     _pipe=None,
@@ -116,12 +116,13 @@ def inference(
                                                   QRCODE_IMAGE_SIZE)
 
     # hack due to gradio examples
-    init_image = qrcode_image
+    # init_image = qrcode_image
 
     out = _pipe(
         prompt=prompt,
         negative_prompt=negative_prompt,
         image=qrcode_image,
+        init_image=init_image,
         control_image=qrcode_image,  # type: ignore
         width=QRCODE_IMAGE_SIZE,  # type: ignore
         height=QRCODE_IMAGE_SIZE,  # type: ignore
