@@ -34,7 +34,7 @@ def create_pipe(base_model: str="runwayml/stable-diffusion-v1-5",
     _pipe = StableDiffusionControlNetImg2ImgPipeline.from_pretrained(
         base_model,
         controlnet=controlnet,
-        safety_checker=None,
+        # safety_checker=None,
         torch_dtype=torch.float16,
         cache_dir=cache_dir,
     ).to("cuda")
